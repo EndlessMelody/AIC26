@@ -1,0 +1,87 @@
+AI Challenge 2026 - Progress Log
+================================
+One line per change. Most recent at the top.
+
+2026-05-11  Workspace audit + upgrade (Gói B) + Team kickoff minutes #0.
+              - Audited the Phase-0 workspace; identified 5 critical gaps.
+              - Filled critical gaps:
+                  docs/glossary.md (VBS/LSC/ML jargon, acronyms)
+                  docs/decisions/ + 3 ADRs (Once UI, Group A, Defer RAG)
+                  docs/risk-register.md (20 risks scored L x I)
+                  docs/contest-day-checklist.md (T-24h ... after)
+                  artifacts/operator-cheatsheet.md (keyboard shortcuts)
+                  data/queries/sample.json (10 query templates w/ placeholders)
+              - Added important upgrades:
+                  3 workflows: mock-contest, profile-latency, export-audit-snapshot
+                  Root config: .pre-commit-config.yaml, .editorconfig, Makefile
+                  artifacts/query-templates/ +8 worked examples + blank template
+                  docs/05-references-papers.md: Annotated Key Readings section
+                  docs/operator-manual.md (mental model + decision rules)
+              - Refreshed indexes:
+                  docs/README.md upgraded with new files + ADR list + minutes
+                  data/README.md clarifies models/ is auto-created by HF
+              - New artefact: docs/minutes/00-kickoff.html
+                  Single-file, design-system-styled HTML covering theme,
+                  workspace organisation, and ~25 tech cards each with
+                  What / Why / Alternatives / Use in our system.
+                  Dark-mode-first, sticky TOC, print-friendly.
+
+2026-05-11  Strategy note - Agent/RAG capability.
+              - Reviewed the 2026 theme wording ("intelligent virtual assistant",
+                "in-depth analysis") and concluded there is a HIGH likelihood
+                (estimated ~55%) that the organizer will introduce a sub-task
+                requiring RAG / agentic capabilities on top of the classic KIS.
+              - Decision: NOT acting on this yet. Keep workspace as-is. Re-evaluate
+                immediately after the organizer publishes the official 2026 spec
+                (expected 7-8/2026, before the preliminary round).
+              - Planned tiered approach when we DO act:
+                  T0 Fast path (pure retrieval, < 200 ms)  - always on
+                  T1 LLM query rewrite                     - low risk
+                  T2 LLM rerank top-20                     - medium risk
+                  T3 Autonomous multi-tool agent           - final-round only
+              - Full architecture sketch and tier rationale are stored in memory
+                (search "Agent RAG analysis" in Cascade memories).
+
+2026-05-11  Rules hardening + design system decision.
+              - Frontend design system switched: TailwindCSS + shadcn/ui REMOVED;
+                Once UI (https://once-ui.com) adopted as the ONLY UI system.
+                Rationale: Vercel-/Linear-grade dark-mode-first aesthetics,
+                semantic layout (<Column>/<Row>/<Grid>), no utility-class noise.
+              - frontend-ui.md fully rewritten with Once UI rules + competition UX.
+              - general.md upgraded: conventional commits w/ scope, idempotency
+                requirement, error envelope, doc policy, code review checklist.
+              - python-ml.md upgraded: determinism, multiprocessing on Windows,
+                data validation (Pydantic+pandera), profiling tools, MLflow hint,
+                NaN/Inf checks, model revision pinning, FAISS conventions.
+              - backend-api.md upgraded: API versioning + deprecation, idempotency
+                keys, security (CORS, rate-limit, body size), observability
+                (logs, metrics, traces, live/ready probes), WebSocket pattern,
+                graceful shutdown, contract tests.
+              - competition-context.md upgraded: scoring formula, audit prep,
+                contest-day playbook, common operator mistakes, anti-patterns.
+              - docs/04-tech-stack.md + frontend/README.md + .env.example
+                synced with Once UI.
+
+2026-05-11  Phase 0 scaffold finalised.
+              - Workspace language confirmed: English-only for all files.
+              - Decision: backend/, frontend/, ml/, scripts/, notebooks/, tests/
+                stay as placeholder READMEs during Phase 0.
+              - pyproject.toml trimmed to minimal deps (tqdm, loguru, dotenv +
+                dev tools); heavy ML/API deps are documented but commented out.
+              - Artifacts populated: prompt library (5 prompts), query templates
+                (textual-kis + video-kis examples), submission format
+                (JSON Schema + example + CSV notes).
+              - Memory written for future Cascade sessions.
+
+2026-05-11  Phase 0 kicked off. Workspace scaffolded:
+              - Folder structure created
+              - Agents rules (5) + workflows (6) authored
+              - Knowledge base (7 docs) authored
+              - .env.example, pyproject.toml, .gitignore ready
+
+Next steps (in order):
+  [ ] Register team before 15/6/2026
+  [ ] Read must-reads from docs/05-references-papers.md
+  [ ] Decide team roles per docs/06-team-roles.md
+  [ ] At the start of Phase 1: scaffold backend (FastAPI), frontend (Next.js
+      via create-next-app), and ml/ with the planned layout

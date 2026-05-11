@@ -1,0 +1,70 @@
+[project]
+name = "ai-challenge-2026"
+version = "0.1.0"
+description = "Interactive multimedia retrieval system for AI Challenge HCMC 2026"
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+license = { text = "MIT" }
+authors = [{ name = "AI Challenge 2026 Team" }]
+
+# Phase 0: minimal runtime - only what's needed for tooling, planning, and notebooks.
+# Heavy ML / API deps are tracked in the planned-deps block below and will be moved
+# into `dependencies` in Phase 1 when backend/ml implementation begins.
+dependencies = [
+  "tqdm>=4.66",
+  "loguru>=0.7",
+  "python-dotenv>=1.0",
+]
+
+# Planned dependency groups (commented out, enable in Phase 1)
+# Core ML:           torch, torchvision, transformers, accelerate, open_clip_torch,
+#                    sentence-transformers
+# Vision/Video/Audio: opencv-python-headless, Pillow, decord, av, librosa, soundfile
+# Retrieval:         faiss-cpu, qdrant-client, rank-bm25
+# OCR/ASR:           paddleocr, easyocr, faster-whisper
+# API:               fastapi, uvicorn[standard], pydantic, pydantic-settings, httpx,
+#                    python-multipart
+# Data:              pandas, numpy<2.0, pyarrow
+# LLM:               openai, google-generativeai
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.1",
+  "pytest-asyncio>=0.23",
+  "pytest-cov>=5.0",
+  "ruff>=0.4",
+  "black>=24.4",
+  "ipykernel>=6.29",
+  "jupyterlab>=4.2",
+  "nbstripout>=0.7",
+]
+
+[project.urls]
+Homepage = "https://aichallenge.hochiminhcity.gov.vn"
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+# No Python packages yet (backend/ and ml/ are placeholders).
+packages = []
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = ["notebooks", "data", ".venv"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "N", "RUF"]
+ignore = ["E501"]
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+extend-exclude = "notebooks|data|\\.venv"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+addopts = "-ra --strict-markers"

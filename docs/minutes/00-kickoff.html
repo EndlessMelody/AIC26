@@ -1,0 +1,2526 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Challenge HCMC 2026 - Team Kickoff Minutes #0</title>
+    <meta
+      name="description"
+      content="Phase 0 kickoff: theme, workspace, and detailed tech-stack rationale for AI Challenge HCMC 2026."
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+        font-size: 16px;
+        line-height: 1.65;
+        color: var(--text);
+        background:
+          radial-gradient(1200px 600px at 80% -10%, rgba(34, 211, 238, 0.1), transparent 60%),
+          radial-gradient(1000px 500px at -10% 30%, rgba(167, 139, 250, 0.1), transparent 60%),
+          linear-gradient(180deg, #060a16 0%, #0a0e1a 30%, #0d1226 100%);
+        background-attachment: fixed;
+        min-height: 100vh;
+      }
+      :root {
+        --bg: #0a0e1a;
+        --surface: #0f152a;
+        --card: #161e3a;
+        --border: #1e2a4a;
+        --border-strong: #2a3a64;
+        --text: #e6ecf5;
+        --text-muted: #9aa7c2;
+        --text-dim: #6b7795;
+        --accent-cyan: #22d3ee;
+        --accent-violet: #a78bfa;
+        --accent-blue: #60a5fa;
+        --accent-emerald: #34d399;
+        --accent-amber: #fbbf24;
+        --accent-rose: #f87171;
+        --gradient-primary: linear-gradient(135deg, #22d3ee 0%, #6366f1 60%, #a78bfa 100%);
+        --gradient-subtle: linear-gradient(
+          135deg,
+          rgba(34, 211, 238, 0.15),
+          rgba(167, 139, 250, 0.15)
+        );
+        --radius-sm: 6px;
+        --radius-md: 10px;
+        --radius-lg: 16px;
+        --radius-xl: 20px;
+        --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+      .page {
+        display: grid;
+        grid-template-columns: 280px minmax(0, 1fr);
+        max-width: 1500px;
+        margin: 0 auto;
+        gap: 48px;
+        padding: 48px 32px 96px;
+      }
+      .toc {
+        position: sticky;
+        top: 32px;
+        align-self: start;
+        max-height: calc(100vh - 64px);
+        overflow-y: auto;
+        padding: 24px;
+        background: linear-gradient(180deg, rgba(22, 30, 58, 0.7), rgba(15, 21, 42, 0.7));
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        backdrop-filter: blur(10px);
+      }
+      .toc h3 {
+        font-size: 11px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--text-dim);
+        margin: 0 0 16px;
+        font-weight: 600;
+      }
+      .toc ol {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        counter-reset: toc;
+      }
+      .toc ol > li {
+        counter-increment: toc;
+      }
+      .toc a {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        padding: 8px 10px;
+        margin: 2px 0;
+        border-radius: var(--radius-sm);
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 14px;
+        transition:
+          color 120ms,
+          background 120ms;
+      }
+      .toc a::before {
+        content: counter(toc, decimal-leading-zero);
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--text-dim);
+      }
+      .toc a:hover {
+        color: var(--text);
+        background: rgba(99, 102, 241, 0.08);
+      }
+      .toc ul {
+        list-style: none;
+        padding: 0 0 0 24px;
+        margin: 4px 0 8px;
+        border-left: 1px solid var(--border);
+      }
+      .toc ul a {
+        font-size: 13px;
+        padding: 5px 10px;
+        color: var(--text-dim);
+      }
+      .toc ul a:hover {
+        color: var(--text-muted);
+      }
+      main {
+        min-width: 0;
+      }
+      .hero {
+        position: relative;
+        padding: 56px 48px 48px;
+        border-radius: var(--radius-xl);
+        background:
+          radial-gradient(800px 300px at 100% 0%, rgba(34, 211, 238, 0.15), transparent 60%),
+          radial-gradient(600px 300px at 0% 100%, rgba(167, 139, 250, 0.15), transparent 60%),
+          linear-gradient(135deg, #0d1429 0%, #131d3d 100%);
+        border: 1px solid var(--border-strong);
+        overflow: hidden;
+        margin-bottom: 64px;
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: var(--gradient-primary);
+        opacity: 0.6;
+      }
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 14px;
+        background: rgba(34, 211, 238, 0.1);
+        color: var(--accent-cyan);
+        border: 1px solid rgba(34, 211, 238, 0.3);
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+      }
+      .hero-badge::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent-cyan);
+        box-shadow: 0 0 12px var(--accent-cyan);
+        animation: pulse 2s ease-in-out infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.6;
+          transform: scale(1.3);
+        }
+      }
+      .hero h1 {
+        font-size: clamp(32px, 5vw, 52px);
+        font-weight: 800;
+        line-height: 1.1;
+        margin: 0 0 16px;
+        letter-spacing: -0.02em;
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .hero-sub {
+        font-size: 18px;
+        color: var(--text-muted);
+        margin: 0 0 32px;
+        max-width: 720px;
+      }
+      .hero-meta {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 20px;
+        padding: 24px;
+        background: rgba(10, 14, 26, 0.5);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+      }
+      .hero-meta dt {
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--text-dim);
+        margin-bottom: 4px;
+        font-weight: 600;
+      }
+      .hero-meta dd {
+        margin: 0;
+        font-size: 15px;
+        color: var(--text);
+        font-weight: 500;
+      }
+      .hero-meta dd code {
+        font-family: var(--mono);
+        font-size: 13px;
+        color: var(--accent-cyan);
+      }
+      section {
+        margin-bottom: 72px;
+        scroll-margin-top: 32px;
+      }
+      section > h2 {
+        font-size: 28px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        margin: 0 0 8px;
+        color: var(--text);
+        display: flex;
+        align-items: baseline;
+        gap: 16px;
+      }
+      section > h2::before {
+        content: attr(data-num);
+        font-family: var(--mono);
+        font-size: 13px;
+        color: var(--accent-cyan);
+        letter-spacing: 0.1em;
+        padding: 4px 10px;
+        background: rgba(34, 211, 238, 0.08);
+        border: 1px solid rgba(34, 211, 238, 0.25);
+        border-radius: var(--radius-sm);
+        font-weight: 600;
+      }
+      section > .section-lead {
+        font-size: 17px;
+        color: var(--text-muted);
+        margin: 0 0 32px;
+        max-width: 760px;
+      }
+      h3 {
+        font-size: 20px;
+        font-weight: 700;
+        margin: 40px 0 16px;
+        color: var(--text);
+        letter-spacing: -0.005em;
+      }
+      h4 {
+        font-size: 15px;
+        font-weight: 600;
+        margin: 20px 0 10px;
+        color: var(--text);
+      }
+      p {
+        margin: 0 0 14px;
+      }
+      a {
+        color: var(--accent-cyan);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 120ms;
+      }
+      a:hover {
+        border-bottom-color: currentColor;
+      }
+      code {
+        font-family: var(--mono);
+        font-size: 0.88em;
+        padding: 2px 6px;
+        background: rgba(99, 102, 241, 0.12);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        border-radius: 4px;
+        color: var(--accent-blue);
+      }
+      pre {
+        font-family: var(--mono);
+        font-size: 13px;
+        padding: 20px;
+        background: #0a0f1e;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        overflow-x: auto;
+        line-height: 1.6;
+        color: var(--text-muted);
+      }
+      pre code {
+        background: none;
+        border: 0;
+        padding: 0;
+        color: inherit;
+      }
+      ul,
+      ol {
+        padding-left: 22px;
+        margin: 0 0 14px;
+      }
+      li {
+        margin-bottom: 6px;
+      }
+      li::marker {
+        color: var(--text-dim);
+      }
+      blockquote {
+        margin: 16px 0;
+        padding: 14px 18px;
+        background: rgba(34, 211, 238, 0.06);
+        border-left: 3px solid var(--accent-cyan);
+        border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+        color: var(--text-muted);
+        font-style: italic;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 16px 0;
+        font-size: 14px;
+      }
+      th,
+      td {
+        padding: 10px 14px;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+      }
+      th {
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text-dim);
+        font-weight: 600;
+      }
+      tr:hover td {
+        background: rgba(34, 211, 238, 0.02);
+      }
+      .theme-callout {
+        padding: 28px 32px;
+        background: var(--gradient-subtle);
+        border: 1px solid var(--border-strong);
+        border-radius: var(--radius-lg);
+        margin: 0 0 32px;
+      }
+      .theme-callout .label {
+        font-size: 12px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--accent-cyan);
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+      .theme-callout .vi {
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--text);
+        line-height: 1.4;
+        margin: 0 0 8px;
+      }
+      .theme-callout .en {
+        font-size: 15px;
+        color: var(--text-muted);
+        font-style: italic;
+      }
+      .keyword-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+        margin: 24px 0;
+      }
+      .keyword-card {
+        padding: 18px 20px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+      }
+      .keyword-card .kw {
+        font-family: var(--mono);
+        font-size: 13px;
+        color: var(--accent-violet);
+        margin-bottom: 6px;
+        font-weight: 600;
+      }
+      .keyword-card .kw-explain {
+        font-size: 14px;
+        color: var(--text-muted);
+        line-height: 1.5;
+      }
+      .tree {
+        background: #080c18;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        padding: 24px;
+        font-family: var(--mono);
+        font-size: 13px;
+        line-height: 1.9;
+        color: var(--text-muted);
+        overflow-x: auto;
+      }
+      .tree .folder {
+        color: var(--accent-blue);
+      }
+      .tree .annotation {
+        color: var(--text-dim);
+        font-style: italic;
+      }
+      .tree .hot {
+        color: var(--accent-emerald);
+      }
+      .tree .placeholder {
+        color: var(--accent-amber);
+      }
+      .tech-group {
+        margin: 40px 0;
+      }
+      .tech-group-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin: 0 0 20px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid var(--border);
+      }
+      .tech-group-icon {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        border-radius: var(--radius-md);
+        background: var(--gradient-subtle);
+        border: 1px solid var(--border-strong);
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--accent-cyan);
+        flex-shrink: 0;
+        font-family: var(--mono);
+      }
+      .tech-group-header h3 {
+        margin: 0;
+      }
+      .tech-group-header .sub {
+        display: block;
+        font-size: 13px;
+        color: var(--text-dim);
+        font-weight: 400;
+        margin-top: 2px;
+      }
+      .tech-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+      .tech-card {
+        padding: 24px 26px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        transition:
+          border-color 160ms,
+          transform 160ms;
+      }
+      .tech-card:hover {
+        border-color: var(--border-strong);
+        transform: translateY(-1px);
+      }
+      .tech-card-head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 12px;
+        margin: 0 0 12px;
+      }
+      .tech-card-head h4 {
+        margin: 0;
+        font-size: 18px;
+        color: var(--text);
+        font-weight: 700;
+      }
+      .tech-badge {
+        font-family: var(--mono);
+        font-size: 11px;
+        padding: 3px 10px;
+        border-radius: 999px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+      }
+      .b-cyan {
+        background: rgba(34, 211, 238, 0.1);
+        color: var(--accent-cyan);
+        border: 1px solid rgba(34, 211, 238, 0.3);
+      }
+      .b-violet {
+        background: rgba(167, 139, 250, 0.1);
+        color: var(--accent-violet);
+        border: 1px solid rgba(167, 139, 250, 0.3);
+      }
+      .b-emerald {
+        background: rgba(52, 211, 153, 0.1);
+        color: var(--accent-emerald);
+        border: 1px solid rgba(52, 211, 153, 0.3);
+      }
+      .b-amber {
+        background: rgba(251, 191, 36, 0.1);
+        color: var(--accent-amber);
+        border: 1px solid rgba(251, 191, 36, 0.3);
+      }
+      .b-rose {
+        background: rgba(248, 113, 113, 0.1);
+        color: var(--accent-rose);
+        border: 1px solid rgba(248, 113, 113, 0.3);
+      }
+      .b-blue {
+        background: rgba(96, 165, 250, 0.1);
+        color: var(--accent-blue);
+        border: 1px solid rgba(96, 165, 250, 0.3);
+      }
+      .tech-tagline {
+        font-size: 14px;
+        color: var(--text-muted);
+        font-style: italic;
+        margin: 0 0 16px;
+      }
+      .tech-block {
+        margin-top: 14px;
+      }
+      .tech-block-label {
+        font-size: 10px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--accent-cyan);
+        font-weight: 700;
+        margin: 0 0 6px;
+      }
+      .tech-block p {
+        font-size: 14.5px;
+        color: var(--text);
+        margin: 0 0 8px;
+      }
+      .tech-block ul {
+        font-size: 14px;
+        color: var(--text-muted);
+        margin: 0;
+        padding-left: 20px;
+      }
+      .tech-block ul li {
+        margin-bottom: 4px;
+      }
+      .tech-block strong {
+        color: var(--text);
+        font-weight: 600;
+      }
+      .tech-block.usage {
+        margin-top: 16px;
+        padding-top: 14px;
+        border-top: 1px dashed var(--border);
+      }
+      .next-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 16px;
+      }
+      .next-card {
+        padding: 22px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+      }
+      .next-card .when {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--accent-cyan);
+        font-weight: 700;
+      }
+      .next-card h4 {
+        margin: 8px 0 6px;
+      }
+      .next-card p {
+        font-size: 14px;
+        color: var(--text-muted);
+        margin: 0;
+      }
+      footer {
+        margin-top: 96px;
+        padding-top: 32px;
+        border-top: 1px solid var(--border);
+        color: var(--text-dim);
+        font-size: 13px;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      @media (max-width: 1000px) {
+        .page {
+          grid-template-columns: 1fr;
+          padding: 24px 16px 64px;
+        }
+        .toc {
+          position: relative;
+          top: auto;
+          max-height: none;
+        }
+        .hero {
+          padding: 40px 28px 32px;
+        }
+      }
+      @media print {
+        body {
+          background: #fff;
+          color: #000;
+        }
+        .toc {
+          display: none;
+        }
+        .page {
+          grid-template-columns: 1fr;
+          padding: 0;
+        }
+        .hero {
+          background: #f5f5f5;
+          color: #000;
+        }
+        .hero h1 {
+          background: none;
+          -webkit-text-fill-color: #000;
+          color: #000;
+        }
+        .tech-card,
+        .next-card,
+        .keyword-card {
+          break-inside: avoid;
+        }
+        a {
+          color: #000;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <nav class="toc" aria-label="Table of contents">
+        <h3>On this page</h3>
+        <ol>
+          <li><a href="#theme">Theme &amp; Problem</a></li>
+          <li><a href="#workspace">Workspace Organization</a></li>
+          <li>
+            <a href="#techstack">Tech Stack - What &amp; Why</a>
+            <ul>
+              <li><a href="#ts-vlm">Vision-Language Foundations</a></li>
+              <li><a href="#ts-extract">Visual &amp; Audio Extraction</a></li>
+              <li><a href="#ts-retrieval">Retrieval Engine</a></li>
+              <li><a href="#ts-llm">LLM &amp; Agent Layer</a></li>
+              <li><a href="#ts-backend">Backend Stack</a></li>
+              <li><a href="#ts-frontend">Frontend Stack</a></li>
+              <li><a href="#ts-data">Data &amp; Processing</a></li>
+              <li><a href="#ts-tooling">Dev Tooling</a></li>
+            </ul>
+          </li>
+          <li><a href="#nextsteps">Next Steps</a></li>
+        </ol>
+      </nav>
+
+      <main>
+        <header class="hero">
+          <span class="hero-badge">Minutes #0 - Phase 0 Kickoff</span>
+          <h1>AI Challenge<br />Ho Chi Minh City 2026</h1>
+          <p class="hero-sub">
+            Building an intelligent virtual assistant for in-depth analysis and retrieval over
+            large-scale Vietnamese multimedia. This document captures the team's starting alignment
+            on the contest, the workspace, and the technologies we will research and master.
+          </p>
+          <dl class="hero-meta">
+            <div>
+              <dt>Date</dt>
+              <dd>2026-05-11</dd>
+            </div>
+            <div>
+              <dt>Phase</dt>
+              <dd>0 - Foundations</dd>
+            </div>
+            <div>
+              <dt>Division</dt>
+              <dd>Group A · University</dd>
+            </div>
+            <div>
+              <dt>Format</dt>
+              <dd>VBS / LSC inherited</dd>
+            </div>
+            <div>
+              <dt>Reg. deadline</dt>
+              <dd><code>15 / 6 / 2026</code></dd>
+            </div>
+            <div>
+              <dt>Workspace lang</dt>
+              <dd>English</dd>
+            </div>
+          </dl>
+        </header>
+
+        <section id="theme">
+          <h2 data-num="01">Theme &amp; Problem</h2>
+          <p class="section-lead">
+            The 2026 theme is the most ambitious of the AI Challenge series so far. Past editions
+            focused on event retrieval from video; this year the scope widens to multimedia (images,
+            audio, text, video) and the deliverable is framed as an
+            <em>intelligent virtual assistant</em>.
+          </p>
+
+          <h3>Theme statement</h3>
+          <div class="theme-callout">
+            <div class="label">Official theme (Vietnamese)</div>
+            <p class="vi">
+              Trợ lý ảo thông minh hỗ trợ phân tích và truy xuất thông tin chuyên sâu trong dữ liệu
+              lớn Multimedia (hình ảnh, âm thanh, văn bản, video).
+            </p>
+            <p class="en">
+              "An intelligent virtual assistant supporting in-depth analysis and retrieval of
+              information from large-scale multimedia data (images, audio, text, video)."
+            </p>
+          </div>
+
+          <p>Three keywords reshape the problem versus 2022-2024:</p>
+
+          <div class="keyword-grid">
+            <div class="keyword-card">
+              <div class="kw">trợ lý ảo thông minh</div>
+              <div class="kw-explain">
+                Intelligent virtual <strong>assistant</strong>. Implies a natural-language, possibly
+                conversational, LLM-driven interface - not just a search box.
+              </div>
+            </div>
+            <div class="keyword-card">
+              <div class="kw">phân tích chuyên sâu</div>
+              <div class="kw-explain">
+                <strong>In-depth analysis</strong>. Beyond find-and-stop: the system should help
+                reason about content (Q&amp;A, summarisation, comparison).
+              </div>
+            </div>
+            <div class="keyword-card">
+              <div class="kw">multimedia</div>
+              <div class="kw-explain">
+                Full <strong>multimedia</strong> scope. Images, audio, text, video - not video-only
+                as in 2024.
+              </div>
+            </div>
+          </div>
+
+          <h3>Core problem - Known-Item Search (KIS)</h3>
+          <p>
+            Regardless of the new theme wording, the AI Challenge inherits its evaluation format
+            from <strong>Video Browser Showdown (VBS)</strong> and
+            <strong>Lifelog Search Challenge (LSC)</strong>. The atomic task is Known-Item Search:
+          </p>
+          <ul>
+            <li>
+              <strong>Textual KIS</strong>: the jury provides a Vietnamese description; the team
+              must locate the exact target. Preliminary round shows the full description upfront.
+              Final round reveals it incrementally - rewarding teams who submit early and correctly.
+            </li>
+            <li>
+              <strong>Video KIS</strong>: the jury plays a clip (≤ 20 s) from the corpus. Teams are
+              <strong>forbidden</strong> from recording or screenshotting the clip - they must
+              describe what they saw via the tool's interface.
+            </li>
+          </ul>
+
+          <blockquote>
+            The contest does not award a fully automated solver. We must ship an
+            <strong>interactive tool</strong> that lets a human operator find answers fast. The
+            operator races the clock; wrong submissions compound penalties.
+            <strong>First-try accuracy</strong> matters more than raw recall.
+          </blockquote>
+
+          <p>Engineering priorities follow:</p>
+          <ol>
+            <li>
+              <strong>Latency</strong> - end-to-end search under 200 ms (P95) on the fast path.
+            </li>
+            <li>
+              <strong>Top-12 recall</strong> - the gold frame must be in the operator's visible
+              region.
+            </li>
+            <li>
+              <strong>Keyboard-first UI</strong> - shortcuts, command palette, virtualised grid.
+            </li>
+            <li>
+              <strong>Vietnamese support</strong> - OCR, ASR, query parsing with correct diacritics.
+            </li>
+            <li>
+              <strong>Audit-ready logs</strong> - the jury may demand a live replay of any
+              submission.
+            </li>
+          </ol>
+
+          <h3>Timeline &amp; division</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Phase</th>
+                <th>Window</th>
+                <th>What we do</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Registration</td>
+                <td>until <code>15 / 6 / 2026</code></td>
+                <td>Form team, register, finish foundations.</td>
+              </tr>
+              <tr>
+                <td>Training</td>
+                <td>6 - 7 / 2026</td>
+                <td>Attend BTC training, harden pipeline.</td>
+              </tr>
+              <tr>
+                <td>Preliminary</td>
+                <td>8 / 2026</td>
+                <td>Compete with Vietnamese textual KIS.</td>
+              </tr>
+              <tr>
+                <td>Final &amp; ceremony</td>
+                <td>9 - 10 / 2026</td>
+                <td>Compete with textual + video KIS on 300 h corpus.</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            We compete in <strong>Group A</strong> (Youth / University Students). See
+            <a href="../decisions/ADR-002-compete-in-group-a.md"><code>ADR-002</code></a> for
+            rationale.
+          </p>
+        </section>
+
+        <section id="workspace">
+          <h2 data-num="02">Workspace Organization</h2>
+          <p class="section-lead">
+            The workspace is the foundation. Phase 0 means docs, rules, workflows, and placeholders
+            - no production code yet. The structure is intentionally English-only so Cascade and
+            future teammates can read it without context switching.
+          </p>
+
+          <h3>Folder tree</h3>
+          <pre class="tree">
+<span class="folder">d:/AI Challenge/</span>
+├── <span class="folder">.windsurf/</span>                       <span class="annotation"># Cascade rules &amp; workflows</span>
+│   ├── <span class="folder">rules/</span>                       <span class="annotation"># 5 rules</span>
+│   │   ├── competition-context.md  <span class="hot">(always_on)</span>
+│   │   ├── general.md              <span class="hot">(always_on)</span>
+│   │   ├── python-ml.md            <span class="annotation">(glob: **/*.py)</span>
+│   │   ├── backend-api.md          <span class="annotation">(glob: backend/**)</span>
+│   │   └── frontend-ui.md          <span class="annotation">(glob: frontend/**)</span>
+│   └── <span class="folder">workflows/</span>                   <span class="annotation"># 9 slash-commands</span>
+├── <span class="folder">docs/</span>                            <span class="annotation"># Knowledge base + decisions + minutes</span>
+│   ├── 00-competition-overview.md  ...  06-team-roles.md
+│   ├── glossary.md, operator-manual.md
+│   ├── contest-day-checklist.md, risk-register.md
+│   ├── <span class="folder">decisions/</span>                   <span class="annotation"># ADRs</span>
+│   └── <span class="folder">minutes/</span>                     <span class="annotation"># This file lives here</span>
+├── <span class="folder">artifacts/</span>                       <span class="annotation"># Prompts, query templates, submission specs</span>
+│   ├── <span class="folder">prompt-library/</span>              <span class="annotation"># 5 LLM prompts</span>
+│   ├── <span class="folder">query-templates/</span>             <span class="annotation"># 10 examples + blank</span>
+│   ├── <span class="folder">submission-format/</span>           <span class="annotation"># JSON Schema + CSV</span>
+│   └── operator-cheatsheet.md      <span class="hot">(print + tape)</span>
+├── <span class="folder">data/</span>                            <span class="annotation"># Gitignored - dataset + indices</span>
+├── <span class="folder">backend/</span>                         <span class="placeholder">[PLACEHOLDER until Phase 1]</span>
+├── <span class="folder">frontend/</span>                        <span class="placeholder">[PLACEHOLDER until Phase 1]</span>
+├── <span class="folder">ml/</span>, <span class="folder">scripts/</span>, <span class="folder">notebooks/</span>, <span class="folder">tests/</span>           <span class="placeholder">[PLACEHOLDER]</span>
+├── README.md, progress.txt, pyproject.toml
+├── Makefile, .pre-commit-config.yaml, .editorconfig
+└── .env.example, .gitignore
+</pre>
+
+          <h3>Rules &amp; workflows</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Rule</th>
+                <th>Trigger</th>
+                <th>Purpose</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>competition-context.md</code></td>
+                <td>always_on</td>
+                <td>Contest format, scoring, audit prep, contest-day playbook.</td>
+              </tr>
+              <tr>
+                <td><code>general.md</code></td>
+                <td>always_on</td>
+                <td>English-only, conventional commits, idempotency, error envelope.</td>
+              </tr>
+              <tr>
+                <td><code>python-ml.md</code></td>
+                <td>Python files</td>
+                <td>Determinism, multiprocessing on Windows, profiling, FAISS conventions.</td>
+              </tr>
+              <tr>
+                <td><code>backend-api.md</code></td>
+                <td>backend/**</td>
+                <td>FastAPI patterns, versioning, observability, WebSocket, security.</td>
+              </tr>
+              <tr>
+                <td><code>frontend-ui.md</code></td>
+                <td>frontend/**</td>
+                <td>Once UI mandate, no Tailwind, keyboard-first competition UX.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>Workflows are invoked with <code>/&lt;name&gt;</code> in Cascade:</p>
+          <ul>
+            <li>
+              <code>/extract-keyframes</code>, <code>/build-embeddings</code>,
+              <code>/ingest-data</code> - data pipeline.
+            </li>
+            <li>
+              <code>/run-dev</code>, <code>/submit-result</code>, <code>/eval-local</code> -
+              development.
+            </li>
+            <li>
+              <code>/mock-contest</code>, <code>/profile-latency</code>,
+              <code>/export-audit-snapshot</code> - contest-readiness.
+            </li>
+          </ul>
+
+          <h3>Conventions</h3>
+          <ul>
+            <li>
+              <strong>Language</strong>: every file in English. Chat with the user in Vietnamese.
+            </li>
+            <li>
+              <strong>Commits</strong>: Conventional Commits with scope -
+              <code>feat(backend): ...</code>, <code>perf(ml): ...</code>.
+            </li>
+            <li>
+              <strong>Decisions</strong>: anything hard-to-reverse becomes an ADR in
+              <code>docs/decisions/</code>.
+            </li>
+            <li>
+              <strong>Progress</strong>: append one line to <code>progress.txt</code> for any
+              user-visible change.
+            </li>
+            <li>
+              <strong>Secrets</strong>: never commit <code>.env</code> or model weights;
+              <code>gitleaks</code> runs in pre-commit.
+            </li>
+          </ul>
+        </section>
+
+        <section id="techstack">
+          <h2 data-num="03">Tech Stack - What &amp; Why</h2>
+          <p class="section-lead">
+            The menu of technologies every team member must understand. Each card explains
+            <strong>what</strong> it is, <strong>why</strong> we chose it given the theme, what
+            <strong>alternatives</strong> we considered, and <strong>where</strong> it fits.
+          </p>
+
+          <div class="tech-group" id="ts-vlm">
+            <div class="tech-group-header">
+              <div class="tech-group-icon">VL</div>
+              <div>
+                <h3>3.1 Vision-Language Foundations</h3>
+                <span class="sub"
+                  >The embedding models that map text and frames into a shared space - the heart of
+                  retrieval.</span
+                >
+              </div>
+            </div>
+            <div class="tech-grid">
+              <div class="tech-card">
+                <div class="tech-card-head">
+                  <h4>OpenCLIP ViT-L/14 (LAION-2B)</h4>
+                  <span class="tech-badge b-cyan">EMBEDDING · PRIMARY</span>
+                </div>
+                <p class="tech-tagline">
+                  A 304 M-parameter image-text encoder trained on 2 B web pairs - our default
+                  retrieval model.
+                </p>
+                <div class="tech-block">
+                  <div class="tech-block-label">What is it?</div>
+                  <p>
+                    An open re-implementation of OpenAI's CLIP trained on LAION-2B. Produces 768-dim
+                    L2-normalised embeddings where dot product approximates semantic similarity
+                    between a sentence and an image.
+                  </p>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Why we chose it</div>
+                  <ul>
+                    <li>
+                      <strong>Battle-tested</strong> on Vietnamese news in AI Challenge 2024 papers.
+                    </li>
+                    <li>
+                      <strong>Stronger than ViT-B/16</strong> (BTC baseline) by ~5-8 points on
+                      Recall@10.
+                    </li>
+                    <li>
+                      <strong>Open weights</strong>: no API quota, runs offline on a 24 GB GPU.
+                    </li>
+                    <li>
+                      <strong>Permissive licence</strong>: usable for the public-sharing requirement
+                      post-event.
+                    </li>
+                  </ul>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Alternatives</div>
+                  <ul>
+                    <li>
+                      <strong>CLIP ViT-B/16</strong> (BTC pre-computed) - keep as baseline, ViT-L
+                      wins on retrieval.
+                    </li>
+                    <li>
+                      <strong>EVA-CLIP-G</strong> - stronger but 1.4 B params, latency at risk.
+                    </li>
+                  </ul>
+                </div>
+                <div class="tech-block usage">
+                  <div class="tech-block-label">Use in our system</div>
+                  <p>
+                    Encode every keyframe at ingest. Encode query text at runtime. Search FAISS HNSW
+                    on dot product.
+                  </p>
+                </div>
+              </div>
+
+              <div class="tech-card">
+                <div class="tech-card-head">
+                  <h4>SigLIP SO400M</h4>
+                  <span class="tech-badge b-cyan">EMBEDDING · CHALLENGER</span>
+                </div>
+                <p class="tech-tagline">
+                  Google's sigmoid-loss multilingual encoder; often beats CLIP on retrieval.
+                </p>
+                <div class="tech-block">
+                  <div class="tech-block-label">What is it?</div>
+                  <p>
+                    Replaces CLIP's softmax contrastive loss with sigmoid loss applied independently
+                    to every image-text pair. Removes the need for very large batches and scales to
+                    longer text. SO400M is the 400 M-parameter shape-optimised checkpoint.
+                  </p>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Why we chose it</div>
+                  <ul>
+                    <li>
+                      <strong>Better text understanding</strong> than CLIP for longer Vietnamese
+                      sentences.
+                    </li>
+                    <li>
+                      <strong>Stronger zero-shot retrieval</strong> at the same parameter budget.
+                    </li>
+                    <li>
+                      <strong>Multilingual training</strong> handles Vietnamese tokens better out of
+                      the box.
+                    </li>
+                  </ul>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Alternatives</div>
+                  <ul>
+                    <li>
+                      <strong>SigLIP base</strong> - smaller, faster, but loses ~3-4 points
+                      Recall@10.
+                    </li>
+                    <li><strong>SigLIP-2</strong> - newer, evaluate when stable.</li>
+                  </ul>
+                </div>
+                <div class="tech-block usage">
+                  <div class="tech-block-label">Use in our system</div>
+                  <p>
+                    Production challenger to OpenCLIP. Index the same keyframes with both; operator
+                    switches via the <code>M</code> shortcut.
+                  </p>
+                </div>
+              </div>
+
+              <div class="tech-card">
+                <div class="tech-card-head">
+                  <h4>BLIP-2</h4>
+                  <span class="tech-badge b-violet">CAPTIONING</span>
+                </div>
+                <p class="tech-tagline">
+                  A vision-language model that writes a rich English caption for every keyframe.
+                </p>
+                <div class="tech-block">
+                  <div class="tech-block-label">What is it?</div>
+                  <p>
+                    Bridges a frozen vision encoder and a frozen language model via a small Q-Former
+                    adapter. Can caption images, answer visual questions, and ground entities.
+                  </p>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Why we chose it</div>
+                  <ul>
+                    <li>
+                      <strong>Richer text per keyframe</strong> than raw object classes; lets BM25
+                      catch keyframes CLIP misses.
+                    </li>
+                    <li>
+                      <strong>Stable English output</strong> we can feed to the LLM rerank layer
+                      (T2).
+                    </li>
+                    <li><strong>Lightweight inference</strong> in FP16 on a single GPU.</li>
+                  </ul>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Alternatives</div>
+                  <ul>
+                    <li>
+                      <strong>LLaVA-OneVision</strong> - more capable, especially on video; consider
+                      for Phase 2.
+                    </li>
+                    <li>
+                      <strong>InstructBLIP</strong> - instruction-tuned; marginal gains for our
+                      task.
+                    </li>
+                  </ul>
+                </div>
+                <div class="tech-block usage">
+                  <div class="tech-block-label">Use in our system</div>
+                  <p>
+                    Caption every keyframe at ingest. Captions become a sparse text field indexed
+                    with BM25. Also feed captions into LLM rerank candidates.
+                  </p>
+                </div>
+              </div>
+
+              <div class="tech-card">
+                <div class="tech-card-head">
+                  <h4>EVA-CLIP / LLaVA-OneVision</h4>
+                  <span class="tech-badge b-violet">RESERVE</span>
+                </div>
+                <p class="tech-tagline">
+                  Higher-capacity vision-language models held in reserve for the final round.
+                </p>
+                <div class="tech-block">
+                  <div class="tech-block-label">What are they?</div>
+                  <p>
+                    <strong>EVA-CLIP</strong> scales the CLIP recipe to billions of parameters with
+                    refined initialisation, yielding state-of-the-art zero-shot retrieval.
+                    <strong>LLaVA-OneVision</strong> unifies image, multi-image, and short-video
+                    understanding behind a multimodal LLM.
+                  </p>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Why we chose them</div>
+                  <ul>
+                    <li>
+                      <strong>Quality ceiling</strong>: when small models plateau, we can climb
+                      further.
+                    </li>
+                    <li>
+                      <strong>Video understanding</strong> in LLaVA-OneVision helps the Video-KIS
+                      describe-flow.
+                    </li>
+                  </ul>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Cost &amp; risk</div>
+                  <ul>
+                    <li>Add 2-5 s latency per query - reserve for the final round only.</li>
+                    <li>Require &gt; 40 GB GPU memory or sharding.</li>
+                  </ul>
+                </div>
+                <div class="tech-block usage">
+                  <div class="tech-block-label">Use in our system</div>
+                  <p>
+                    Tier-T3 only. Activated on demand for the hardest queries. Not on the fast path.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tech-group" id="ts-extract">
+            <div class="tech-group-header">
+              <div class="tech-group-icon">EX</div>
+              <div>
+                <h3>3.2 Visual &amp; Audio Extraction</h3>
+                <span class="sub"
+                  >Models that turn raw multimedia into structured, searchable signals.</span
+                >
+              </div>
+            </div>
+            <div class="tech-grid">
+              <div class="tech-card">
+                <div class="tech-card-head">
+                  <h4>YOLOv10</h4>
+                  <span class="tech-badge b-emerald">OBJECT DETECTION</span>
+                </div>
+                <p class="tech-tagline">
+                  Real-time object detection that re-scans every keyframe with up-to-date class
+                  accuracy.
+                </p>
+                <div class="tech-block">
+                  <div class="tech-block-label">What is it?</div>
+                  <p>
+                    The 2024 iteration of the YOLO family, removing non-maximum suppression and
+                    improving small-object accuracy on COCO. Inference is sub-millisecond on a
+                    modern GPU.
+                  </p>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Why we chose it</div>
+                  <ul>
+                    <li>
+                      <strong>Modern class accuracy</strong> beats the BTC-provided Faster R-CNN
+                      baseline on common classes.
+                    </li>
+                    <li><strong>Speed</strong>: re-detect 300 h of keyframes in a few hours.</li>
+                    <li>
+                      <strong>Augments BTC concepts</strong> with our own labels - we are not locked
+                      in.
+                    </li>
+                  </ul>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Alternatives</div>
+                  <ul>
+                    <li>
+                      <strong>Faster R-CNN</strong> (BTC-provided) - already shipped, but 600 fixed
+                      labels.
+                    </li>
+                    <li><strong>YOLOv8</strong> - stable but slightly behind in accuracy.</li>
+                  </ul>
+                </div>
+                <div class="tech-block usage">
+                  <div class="tech-block-label">Use in our system</div>
+                  <p>
+                    Backbone of the closed-vocabulary object filter. Detections feed an inverted
+                    index keyed by class.
+                  </p>
+                </div>
+              </div>
+
+              <div class="tech-card">
+                <div class="tech-card-head">
+                  <h4>Grounding DINO</h4>
+                  <span class="tech-badge b-emerald">OPEN-VOCAB DETECTION</span>
+                </div>
+                <p class="tech-tagline">
+                  Detect arbitrary visual concepts described in natural language.
+                </p>
+                <div class="tech-block">
+                  <div class="tech-block-label">What is it?</div>
+                  <p>
+                    An open-set object detector that accepts free-form text prompts ("Vietnamese
+                    national flag", "elderly farmer with conical hat") and returns bounding boxes.
+                    Bridges the gap between fixed-class detection and CLIP-style retrieval.
+                  </p>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Why we chose it</div>
+                  <ul>
+                    <li>
+                      <strong>Operator-typed filters</strong>: the contestant types a phrase, the
+                      system grounds it.
+                    </li>
+                    <li>
+                      <strong>Coverage</strong>: catches culturally specific objects (nón lá, áo
+                      dài, đèn lồng) absent from COCO.
+                    </li>
+                    <li>
+                      <strong>Complements CLIP</strong>: gives spatial localisation in addition to
+                      retrieval.
+                    </li>
+                  </ul>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Alternatives</div>
+                  <ul>
+                    <li><strong>OWL-ViT</strong> - similar concept, weaker on small objects.</li>
+                    <li><strong>Detic</strong> - large vocabulary but fixed class set.</li>
+                  </ul>
+                </div>
+                <div class="tech-block usage">
+                  <div class="tech-block-label">Use in our system</div>
+                  <p>
+                    Operator-triggered. The UI exposes a "filter by visual concept" text box backed
+                    by Grounding DINO.
+                  </p>
+                </div>
+              </div>
+
+              <div class="tech-card">
+                <div class="tech-card-head">
+                  <h4>PaddleOCR (PP-OCRv4)</h4>
+                  <span class="tech-badge b-amber">OCR · PRIMARY</span>
+                </div>
+                <p class="tech-tagline">The best general-purpose OCR for Vietnamese diacritics.</p>
+                <div class="tech-block">
+                  <div class="tech-block-label">What is it?</div>
+                  <p>
+                    Baidu's PaddleOCR stack: text detection (DBNet-style) followed by CRNN
+                    recognition, with a small angle classifier. PP-OCRv4 added training data and
+                    quality improvements over v3.
+                  </p>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Why we chose it</div>
+                  <ul>
+                    <li>
+                      <strong>Vietnamese support is genuinely good</strong>; diacritics survive
+                      better than in EasyOCR.
+                    </li>
+                    <li><strong>Fast on CPU</strong> - no scarce GPU time for OCR.</li>
+                    <li>
+                      <strong>News graphics ready</strong>: handles burnt-in chyrons and tickers.
+                    </li>
+                  </ul>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Alternatives</div>
+                  <ul>
+                    <li>
+                      <strong>EasyOCR</strong> - simpler API but worse on Vietnamese tonal marks.
+                    </li>
+                    <li>
+                      <strong>Tesseract</strong> - mature, but Vietnamese quality lags far behind.
+                    </li>
+                  </ul>
+                </div>
+                <div class="tech-block usage">
+                  <div class="tech-block-label">Use in our system</div>
+                  <p>
+                    Run on every keyframe at ingest. Output stored in
+                    <code>data/metadata/ocr.parquet</code>, indexed by BM25.
+                  </p>
+                </div>
+              </div>
+
+              <div class="tech-card">
+                <div class="tech-card-head">
+                  <h4>PhoWhisper + faster-whisper</h4>
+                  <span class="tech-badge b-amber">ASR · PRIMARY</span>
+                </div>
+                <p class="tech-tagline">
+                  VinAI's Whisper fine-tuned on Vietnamese broadcast audio, accelerated with
+                  CTranslate2.
+                </p>
+                <div class="tech-block">
+                  <div class="tech-block-label">What is it?</div>
+                  <p>
+                    <strong>PhoWhisper</strong> is OpenAI's Whisper architecture fine-tuned by VinAI
+                    on Vietnamese news, interviews, and conversation.
+                    <strong>faster-whisper</strong> wraps it in CTranslate2 for 4-5x speedup with
+                    the same quality. <strong>pyannote.audio</strong> provides voice-activity
+                    detection so we transcribe only the speech regions.
+                  </p>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Why we chose it</div>
+                  <ul>
+                    <li>
+                      <strong>Domain match</strong>: news Vietnamese is its strongest setting.
+                    </li>
+                    <li>
+                      <strong>Better diacritics</strong> than vanilla Whisper on regional accents.
+                    </li>
+                    <li>
+                      <strong>Speed</strong>: cuts 300 h of audio transcription from days to hours.
+                    </li>
+                    <li><strong>VAD</strong> avoids hallucinated transcripts on non-speech.</li>
+                  </ul>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Alternatives</div>
+                  <ul>
+                    <li><strong>Whisper large-v3</strong> - general-purpose; runs as fallback.</li>
+                    <li>
+                      <strong>wav2vec2-base-vietnamese</strong> - smaller, weaker, useful for
+                      streaming.
+                    </li>
+                  </ul>
+                </div>
+                <div class="tech-block usage">
+                  <div class="tech-block-label">Use in our system</div>
+                  <p>
+                    Pipeline: VAD → segments → faster-whisper → diacritic post-processing. Output in
+                    <code>data/metadata/asr.parquet</code> with millisecond-precise timestamps.
+                  </p>
+                </div>
+              </div>
+
+              <div class="tech-card">
+                <div class="tech-card-head">
+                  <h4>TransNetV2</h4>
+                  <span class="tech-badge b-blue">SHOT BOUNDARY</span>
+                </div>
+                <p class="tech-tagline">
+                  Lightweight neural shot-boundary detector to extract keyframes.
+                </p>
+                <div class="tech-block">
+                  <div class="tech-block-label">What is it?</div>
+                  <p>
+                    A small 3D-CNN that predicts shot transitions frame-by-frame. We use it (or
+                    BTC-provided keyframes when sufficient) to pick a representative frame per shot.
+                  </p>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Why we chose it</div>
+                  <ul>
+                    <li>
+                      <strong>Quality</strong>: catches soft transitions BTC's default may miss.
+                    </li>
+                    <li><strong>Speed</strong>: faster than running CLIP on every frame.</li>
+                    <li><strong>Open licence</strong>: usable in submitted artefacts.</li>
+                  </ul>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Alternative</div>
+                  <ul>
+                    <li>
+                      <strong>PySceneDetect</strong> - classical histogram-based; faster but less
+                      accurate on dissolves.
+                    </li>
+                  </ul>
+                </div>
+                <div class="tech-block usage">
+                  <div class="tech-block-label">Use in our system</div>
+                  <p>
+                    If BTC keyframes are insufficient, densify with TransNetV2. One keyframe per
+                    shot, plus BTC defaults.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tech-group" id="ts-retrieval">
+            <div class="tech-group-header">
+              <div class="tech-group-icon">RE</div>
+              <div>
+                <h3>3.3 Retrieval Engine</h3>
+                <span class="sub">The fast-path engine: dense vectors + sparse text + fusion.</span>
+              </div>
+            </div>
+            <div class="tech-grid">
+              <div class="tech-card">
+                <div class="tech-card-head">
+                  <h4>FAISS (HNSW)</h4>
+                  <span class="tech-badge b-rose">ANN · PRIMARY</span>
+                </div>
+                <p class="tech-tagline">
+                  Facebook AI Similarity Search - the de facto open ANN library.
+                </p>
+                <div class="tech-block">
+                  <div class="tech-block-label">What is it?</div>
+                  <p>
+                    A C++ library with Python bindings for billion-scale similarity search. HNSW
+                    (Hierarchical Navigable Small World) is one of its index types - a multi-layer
+                    graph supporting sub-millisecond retrieval with high recall.
+                  </p>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Why we chose it</div>
+                  <ul>
+                    <li><strong>P95 &lt; 5 ms</strong> on our corpus size (1-3 M keyframes).</li>
+                    <li>
+                      <strong>Tuneable recall vs latency</strong> via <code>efSearch</code> at query
+                      time.
+                    </li>
+                    <li><strong>Memory-mapped</strong>: index stays on disk, loads on demand.</li>
+                    <li>
+                      <strong>Battle-tested</strong> in every VBS / LSC winner of the last five
+                      years.
+                    </li>
+                  </ul>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Alternatives</div>
+                  <ul>
+                    <li>
+                      <strong>FAISS IVF-PQ</strong> - smaller memory but slower; reserve for
+                      emergencies.
+                    </li>
+                    <li>
+                      <strong>ScaNN</strong> - Google's alternative, slightly faster but harder to
+                      deploy.
+                    </li>
+                  </ul>
+                </div>
+                <div class="tech-block usage">
+                  <div class="tech-block-label">Use in our system</div>
+                  <p>
+                    Default: HNSW with <code>M=32</code>, <code>efConstruction=200</code>,
+                    <code>efSearch=64</code>. Loaded once at backend startup.
+                  </p>
+                </div>
+              </div>
+
+              <div class="tech-card">
+                <div class="tech-card-head">
+                  <h4>Qdrant</h4>
+                  <span class="tech-badge b-rose">ANN · BACKUP</span>
+                </div>
+                <p class="tech-tagline">
+                  Open-source vector database with filtering and payload support.
+                </p>
+                <div class="tech-block">
+                  <div class="tech-block-label">What is it?</div>
+                  <p>
+                    A Rust-based vector database with HNSW under the hood plus structured payload
+                    filtering (e.g. "vectors where <code>video_id IN [...]</code>"). Talks over HTTP
+                    / gRPC.
+                  </p>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Why we chose it</div>
+                  <ul>
+                    <li>
+                      <strong>Payload filters</strong>: vector search + structured constraints
+                      (year, video, object class) in one round trip.
+                    </li>
+                    <li>
+                      <strong>Hot reload</strong>: easier to swap models than re-baking a FAISS
+                      file.
+                    </li>
+                    <li><strong>Snapshot API</strong>: simplifies the audit-snapshot workflow.</li>
+                  </ul>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Alternatives</div>
+                  <ul>
+                    <li><strong>Weaviate</strong> - similar features, heavier setup.</li>
+                    <li>
+                      <strong>Milvus</strong> - excellent at billion scale, overkill for 3 M
+                      keyframes.
+                    </li>
+                  </ul>
+                </div>
+                <div class="tech-block usage">
+                  <div class="tech-block-label">Use in our system</div>
+                  <p>
+                    Backup vector store. Default to FAISS for latency; switch to Qdrant if the
+                    operator needs complex payload filters mid-contest.
+                  </p>
+                </div>
+              </div>
+
+              <div class="tech-card">
+                <div class="tech-card-head">
+                  <h4>BM25 (rank_bm25 / pyserini)</h4>
+                  <span class="tech-badge b-rose">SPARSE RETRIEVAL</span>
+                </div>
+                <p class="tech-tagline">Classical lexical search over OCR, ASR, and captions.</p>
+                <div class="tech-block">
+                  <div class="tech-block-label">What is it?</div>
+                  <p>
+                    A probabilistic ranking function based on term frequency and inverse document
+                    frequency with tunable length normalisation. The canonical baseline for text
+                    retrieval.
+                  </p>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Why we chose it</div>
+                  <ul>
+                    <li>
+                      <strong>Catches exact terms</strong> CLIP misses ("Bộ Y tế", "Sài Gòn").
+                    </li>
+                    <li>
+                      <strong>Trivially fast</strong>: indexes in seconds, queries in milliseconds.
+                    </li>
+                    <li>
+                      <strong>Complementary to dense</strong>: BM25 + CLIP via RRF outperforms
+                      either alone.
+                    </li>
+                  </ul>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Alternatives</div>
+                  <ul>
+                    <li>
+                      <strong>SPLADE</strong> - learned sparse retrieval; great quality but slower.
+                    </li>
+                    <li><strong>Elasticsearch</strong> - heavier, network-bound, overkill.</li>
+                  </ul>
+                </div>
+                <div class="tech-block usage">
+                  <div class="tech-block-label">Use in our system</div>
+                  <p>
+                    Index OCR text, ASR transcripts, and BLIP-2 captions. Query in parallel with
+                    CLIP and fuse via RRF.
+                  </p>
+                </div>
+              </div>
+
+              <div class="tech-card">
+                <div class="tech-card-head">
+                  <h4>Reciprocal Rank Fusion (RRF)</h4>
+                  <span class="tech-badge b-rose">FUSION</span>
+                </div>
+                <p class="tech-tagline">
+                  Combine the top-k of several rankers into one robust top-k.
+                </p>
+                <div class="tech-block">
+                  <div class="tech-block-label">What is it?</div>
+                  <p>
+                    For each candidate <code>i</code> and each ranker <code>j</code>, the RRF score
+                    is <code>Σ 1 / (k + rank_j(i))</code> with a small constant
+                    <code>k</code> (typically 60). Items ranked high by multiple rankers float to
+                    the top.
+                  </p>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Why we chose it</div>
+                  <ul>
+                    <li>
+                      <strong>No hyper-parameters</strong> beyond <code>k</code>; no learning
+                      required.
+                    </li>
+                    <li>
+                      <strong>Robust</strong>: a single ranker disagreeing does not torpedo the
+                      consensus.
+                    </li>
+                    <li>
+                      <strong>Standard</strong> in VBS-winning systems for fusing CLIP + BM25 +
+                      objects.
+                    </li>
+                  </ul>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Alternatives</div>
+                  <ul>
+                    <li>
+                      <strong>Learning-to-Rank (XGBoost / LambdaMART)</strong> - higher ceiling but
+                      needs training data.
+                    </li>
+                    <li>
+                      <strong>CombSUM / Borda</strong> - simpler fusions; usually slightly worse
+                      than RRF.
+                    </li>
+                  </ul>
+                </div>
+                <div class="tech-block usage">
+                  <div class="tech-block-label">Use in our system</div>
+                  <p>
+                    Default fusion across CLIP, SigLIP (if enabled), BM25, and object filters. The
+                    fused top-100 feeds the rerank tier.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tech-group" id="ts-llm">
+            <div class="tech-group-header">
+              <div class="tech-group-icon">AI</div>
+              <div>
+                <h3>3.4 LLM &amp; Agent Layer</h3>
+                <span class="sub"
+                  >Plan ready; build is deferred until the BTC spec arrives (see
+                  <a href="../decisions/ADR-003-defer-agent-rag.md"><code>ADR-003</code></a
+                  >).</span
+                >
+              </div>
+            </div>
+            <div class="tech-grid">
+              <div class="tech-card">
+                <div class="tech-card-head">
+                  <h4>GPT-4o-mini (OpenAI API)</h4>
+                  <span class="tech-badge b-violet">LLM · CLOUD</span>
+                </div>
+                <p class="tech-tagline">
+                  Cheap, fast, capable enough for query rewrite and rerank.
+                </p>
+                <div class="tech-block">
+                  <div class="tech-block-label">What is it?</div>
+                  <p>
+                    OpenAI's small-but-capable model. Strong at instruction following, JSON output,
+                    and Vietnamese understanding. Low cost per token makes it acceptable for runtime
+                    use.
+                  </p>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Why we chose it</div>
+                  <ul>
+                    <li>
+                      <strong>JSON mode</strong> matches our strict prompt schemas (see
+                      <code>artifacts/prompt-library/</code>).
+                    </li>
+                    <li><strong>Sub-second latency</strong> for typical query rewrites.</li>
+                    <li>
+                      <strong>Good Vietnamese</strong>: comparable to GPT-4o on basic comprehension.
+                    </li>
+                  </ul>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Alternatives</div>
+                  <ul>
+                    <li>
+                      <strong>Gemini 1.5 Flash</strong> - similar latency, alternative provider.
+                    </li>
+                    <li>
+                      <strong>Claude 3 Haiku</strong> - strong on long context, slightly slower.
+                    </li>
+                  </ul>
+                </div>
+                <div class="tech-block usage">
+                  <div class="tech-block-label">Use in our system</div>
+                  <p>
+                    Tiers T1 (query rewrite) and T2 (rerank). Always behind a provider abstraction
+                    so we can swap.
+                  </p>
+                </div>
+              </div>
+
+              <div class="tech-card">
+                <div class="tech-card-head">
+                  <h4>Qwen2.5-7B-Instruct (local)</h4>
+                  <span class="tech-badge b-violet">LLM · OFFLINE</span>
+                </div>
+                <p class="tech-tagline">Local fallback when the contest hall network falters.</p>
+                <div class="tech-block">
+                  <div class="tech-block-label">What is it?</div>
+                  <p>
+                    Alibaba's open-weight 7 B-parameter instruction-tuned LLM. Strong multilingual
+                    coverage including Vietnamese. Runs comfortably on a single 16 GB GPU at 4-bit
+                    quantisation.
+                  </p>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Why we chose it</div>
+                  <ul>
+                    <li>
+                      <strong>No network dependency</strong>: the contest hall has been unreliable
+                      in past years.
+                    </li>
+                    <li>
+                      <strong>Open weights</strong>: no quota, no privacy concern about Vietnamese
+                      queries leaving the box.
+                    </li>
+                    <li>
+                      <strong>Quality close enough</strong> to gpt-4o-mini for our prompt set.
+                    </li>
+                  </ul>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Alternatives</div>
+                  <ul>
+                    <li><strong>Llama 3.1 8B</strong> - similar quality, weaker on Vietnamese.</li>
+                    <li><strong>Gemma 2 9B</strong> - good general model, restrictive licence.</li>
+                  </ul>
+                </div>
+                <div class="tech-block usage">
+                  <div class="tech-block-label">Use in our system</div>
+                  <p>
+                    Drop-in replacement for the API LLM under <code>LOCAL_LLM_ENABLED=true</code>.
+                    Same prompt schemas; same JSON output.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tech-group" id="ts-backend">
+            <div class="tech-group-header">
+              <div class="tech-group-icon">BE</div>
+              <div>
+                <h3>3.5 Backend Stack</h3>
+                <span class="sub">The async Python service that fronts the retrieval engine.</span>
+              </div>
+            </div>
+            <div class="tech-grid">
+              <div class="tech-card">
+                <div class="tech-card-head">
+                  <h4>FastAPI + Uvicorn</h4>
+                  <span class="tech-badge b-blue">WEB FRAMEWORK</span>
+                </div>
+                <p class="tech-tagline">Async-first Python web framework on the ASGI standard.</p>
+                <div class="tech-block">
+                  <div class="tech-block-label">What is it?</div>
+                  <p>
+                    FastAPI is a modern Python framework built on Starlette and Pydantic; it
+                    auto-generates OpenAPI docs from type hints. Uvicorn is the ASGI server that
+                    runs it.
+                  </p>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Why we chose it</div>
+                  <ul>
+                    <li>
+                      <strong>Type-safe by default</strong>: Pydantic validates every request and
+                      response.
+                    </li>
+                    <li>
+                      <strong>Async</strong>: handle WebSocket + HTTP concurrently with one process.
+                    </li>
+                    <li><strong>OpenAPI</strong>: the frontend gets typed client code for free.</li>
+                    <li>
+                      <strong>Lifespan</strong>: load the FAISS index once at startup, never per
+                      request.
+                    </li>
+                  </ul>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Alternatives</div>
+                  <ul>
+                    <li>
+                      <strong>Flask</strong> - older, synchronous; would block on long LLM calls.
+                    </li>
+                    <li><strong>Starlette directly</strong> - more verbose, loses auto-docs.</li>
+                  </ul>
+                </div>
+                <div class="tech-block usage">
+                  <div class="tech-block-label">Use in our system</div>
+                  <p>
+                    Hosts <code>/api/v1/search</code>, <code>/submit</code>, <code>/video</code>,
+                    plus WebSocket at <code>/api/v1/ws/operator</code>.
+                  </p>
+                </div>
+              </div>
+
+              <div class="tech-card">
+                <div class="tech-card-head">
+                  <h4>Pydantic v2 + pydantic-settings</h4>
+                  <span class="tech-badge b-blue">DATA / CONFIG</span>
+                </div>
+                <p class="tech-tagline">Runtime-validated typed models and settings.</p>
+                <div class="tech-block">
+                  <div class="tech-block-label">What is it?</div>
+                  <p>
+                    Pydantic validates Python objects against type hints at runtime. v2 reimplements
+                    the core in Rust for major speed-ups. <code>pydantic-settings</code> reads typed
+                    config from <code>.env</code> + environment.
+                  </p>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Why we chose it</div>
+                  <ul>
+                    <li>
+                      <strong>Schema correctness</strong>: input from the frontend or BTC ingest is
+                      validated before it can crash the pipeline.
+                    </li>
+                    <li>
+                      <strong>Speed</strong>: validates millions of records during ingest without
+                      bottlenecking.
+                    </li>
+                    <li>
+                      <strong>Single source of truth</strong>: Pydantic models double as OpenAPI
+                      schemas and DTOs.
+                    </li>
+                  </ul>
+                </div>
+                <div class="tech-block usage">
+                  <div class="tech-block-label">Use in our system</div>
+                  <p>
+                    Every request/response body is a Pydantic model. Settings module is the only
+                    place <code>os.getenv</code> is allowed.
+                  </p>
+                </div>
+              </div>
+
+              <div class="tech-card">
+                <div class="tech-card-head">
+                  <h4>WebSocket (FastAPI)</h4>
+                  <span class="tech-badge b-blue">REAL-TIME</span>
+                </div>
+                <p class="tech-tagline">Bidirectional, sub-50ms streaming for the operator UI.</p>
+                <div class="tech-block">
+                  <div class="tech-block-label">What is it?</div>
+                  <p>
+                    A persistent TCP-based channel for low-latency JSON messages. FastAPI's
+                    WebSocket support sits on the same event loop as HTTP.
+                  </p>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Why we chose it</div>
+                  <ul>
+                    <li>
+                      <strong>Result streaming</strong>: surface the first 12 candidates as they
+                      arrive instead of after the full top-100 is ranked.
+                    </li>
+                    <li>
+                      <strong>Status updates</strong>: submission progress, rerank progress,
+                      audit-mode notifications.
+                    </li>
+                    <li>
+                      <strong>Endorsed by the 2025 AI Challenge paper</strong> on real-time
+                      multimedia retrieval.
+                    </li>
+                  </ul>
+                </div>
+                <div class="tech-block usage">
+                  <div class="tech-block-label">Use in our system</div>
+                  <p>
+                    One persistent connection per operator; versioned JSON messages (<code
+                      >{ "v": 1, "type": "result_chunk", "payload": ... }</code
+                    >).
+                  </p>
+                </div>
+              </div>
+
+              <div class="tech-card">
+                <div class="tech-card-head">
+                  <h4>loguru + Prometheus + OpenTelemetry</h4>
+                  <span class="tech-badge b-blue">OBSERVABILITY</span>
+                </div>
+                <p class="tech-tagline">Structured logs, metrics, and traces - the audit trail.</p>
+                <div class="tech-block">
+                  <div class="tech-block-label">What are they?</div>
+                  <p>
+                    <strong>loguru</strong> is a friendlier Python logger with structured kwargs.
+                    <strong>Prometheus</strong> scrapes a <code>/metrics</code> endpoint with our
+                    histograms and counters. <strong>OpenTelemetry</strong> instruments FastAPI for
+                    distributed traces.
+                  </p>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Why we chose them</div>
+                  <ul>
+                    <li>
+                      <strong>Audit-ready</strong>: every search and submission is captured with
+                      <code>request_id</code>.
+                    </li>
+                    <li>
+                      <strong>Latency budgets</strong>: histograms expose where milliseconds go.
+                    </li>
+                    <li>
+                      <strong>Post-round retros</strong>: replay any moment of a round from the
+                      logs.
+                    </li>
+                  </ul>
+                </div>
+                <div class="tech-block usage">
+                  <div class="tech-block-label">Use in our system</div>
+                  <p>
+                    Every log line carries <code>request_id</code> and <code>endpoint</code>.
+                    Prometheus runs locally; metrics dumped to <code>reports/</code> after each
+                    round.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tech-group" id="ts-frontend">
+            <div class="tech-group-header">
+              <div class="tech-group-icon">FE</div>
+              <div>
+                <h3>3.6 Frontend Stack</h3>
+                <span class="sub"
+                  >A keyboard-first operator UI built on Once UI - the only design system allowed
+                  (see
+                  <a href="../decisions/ADR-001-once-ui-design-system.md"><code>ADR-001</code></a
+                  >).</span
+                >
+              </div>
+            </div>
+            <div class="tech-grid">
+              <div class="tech-card">
+                <div class="tech-card-head">
+                  <h4>Next.js 14 (App Router)</h4>
+                  <span class="tech-badge b-cyan">FRAMEWORK</span>
+                </div>
+                <p class="tech-tagline">
+                  React framework with server components and file-based routing.
+                </p>
+                <div class="tech-block">
+                  <div class="tech-block-label">What is it?</div>
+                  <p>
+                    Next.js is a production-grade React framework. The App Router (since v13)
+                    supports Server Components, Streaming SSR, and co-located route segments.
+                  </p>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Why we chose it</div>
+                  <ul>
+                    <li>
+                      <strong>Server Components</strong> reduce JS sent to the browser - faster
+                      contest-day cold start.
+                    </li>
+                    <li>
+                      <strong>App Router</strong> lets us colocate UI, loading states, and error
+                      boundaries.
+                    </li>
+                    <li>
+                      <strong>Mature dev experience</strong>: fast refresh, typed images, file-based
+                      routes.
+                    </li>
+                  </ul>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Alternatives</div>
+                  <ul>
+                    <li>
+                      <strong>Vite + React Router</strong> - lighter but loses SSR and image
+                      optimisation.
+                    </li>
+                    <li><strong>Remix</strong> - excellent, but smaller ecosystem.</li>
+                  </ul>
+                </div>
+                <div class="tech-block usage">
+                  <div class="tech-block-label">Use in our system</div>
+                  <p>
+                    Hosts the operator UI at <code>/</code>, <code>/search</code>,
+                    <code>/submit</code>. Connects to FastAPI over HTTP + WebSocket.
+                  </p>
+                </div>
+              </div>
+
+              <div class="tech-card">
+                <div class="tech-card-head">
+                  <h4>Once UI</h4>
+                  <span class="tech-badge b-cyan">DESIGN SYSTEM</span>
+                </div>
+                <p class="tech-tagline">Semantic-layout, design-token-driven, dark-mode-first.</p>
+                <div class="tech-block">
+                  <div class="tech-block-label">What is it?</div>
+                  <p>
+                    A React component library that swaps utility classes for prop-driven layout
+                    primitives: <code>&lt;Column&gt;</code>, <code>&lt;Row&gt;</code>,
+                    <code>&lt;Grid&gt;</code>, <code>&lt;Heading&gt;</code>,
+                    <code>&lt;Text&gt;</code>. Tokens (<code>background="surface"</code>,
+                    <code>onBackground="neutral-weak"</code>) abstract colour and theme.
+                  </p>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Why we chose it</div>
+                  <ul>
+                    <li>
+                      <strong>Dark-mode-first</strong>: matches the contest-hall ergonomic setting.
+                    </li>
+                    <li>
+                      <strong>Semantic layout</strong>: the JSX reads like a layout description, not
+                      a CSS class soup.
+                    </li>
+                    <li><strong>Vercel-/Linear-/Raycast-grade polish</strong> by default.</li>
+                    <li><strong>Accessibility</strong> on primitives without us reinventing it.</li>
+                  </ul>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Banned alternatives</div>
+                  <ul>
+                    <li>
+                      <strong>TailwindCSS / shadcn/ui</strong> - utility-class noise; rejected after
+                      ADR-001.
+                    </li>
+                    <li>
+                      <strong>MUI / Chakra / Mantine</strong> - heavier, less coherent dark mode.
+                    </li>
+                  </ul>
+                </div>
+                <div class="tech-block usage">
+                  <div class="tech-block-label">Use in our system</div>
+                  <p>
+                    Every component is built from Once UI primitives. Custom product components live
+                    in <code>frontend/components/</code> and spread Once UI props on the outer
+                    wrapper.
+                  </p>
+                </div>
+              </div>
+
+              <div class="tech-card">
+                <div class="tech-card-head">
+                  <h4>TanStack Query + Zustand</h4>
+                  <span class="tech-badge b-cyan">STATE</span>
+                </div>
+                <p class="tech-tagline">Server state and client state, separated.</p>
+                <div class="tech-block">
+                  <div class="tech-block-label">What are they?</div>
+                  <p>
+                    <strong>TanStack Query</strong> caches server data with stale-while-revalidate
+                    semantics. <strong>Zustand</strong> is a minimal client state library (no
+                    providers, no boilerplate).
+                  </p>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Why we chose them</div>
+                  <ul>
+                    <li>
+                      <strong>Right tool per kind of state</strong>: server data in TanStack Query,
+                      UI state in Zustand.
+                    </li>
+                    <li>
+                      <strong>Cancellation</strong>: TanStack Query cancels in-flight queries on
+                      keystroke - critical for the search bar.
+                    </li>
+                    <li><strong>Devtools</strong>: easy debugging during mock contests.</li>
+                  </ul>
+                </div>
+                <div class="tech-block usage">
+                  <div class="tech-block-label">Use in our system</div>
+                  <p>
+                    One store per feature (<code>useSearchStore</code>,
+                    <code>useShortcutsStore</code>). Query hooks colocated in
+                    <code>frontend/lib/queries/</code>.
+                  </p>
+                </div>
+              </div>
+
+              <div class="tech-card">
+                <div class="tech-card-head">
+                  <h4>@tanstack/react-virtual</h4>
+                  <span class="tech-badge b-cyan">VIRTUALIZATION</span>
+                </div>
+                <p class="tech-tagline">
+                  Render thousands of thumbnails without freezing the browser.
+                </p>
+                <div class="tech-block">
+                  <div class="tech-block-label">What is it?</div>
+                  <p>
+                    A headless virtualisation hook that renders only the visible portion of a long
+                    list or grid. Used for result grids of up to 10,000 keyframes.
+                  </p>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Why we chose it</div>
+                  <ul>
+                    <li>
+                      <strong>Headless</strong>: integrates cleanly with Once UI
+                      <code>&lt;Grid&gt;</code> without imposing styles.
+                    </li>
+                    <li><strong>Stable</strong>: shipped across the TanStack ecosystem.</li>
+                    <li><strong>Critical for our top-k=10000</strong> investigation flows.</li>
+                  </ul>
+                </div>
+                <div class="tech-block usage">
+                  <div class="tech-block-label">Use in our system</div>
+                  <p>
+                    The result grid in <code>components/search/ResultGrid.tsx</code> wraps a
+                    virtualiser inside a Once UI <code>&lt;Grid&gt;</code>.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tech-group" id="ts-data">
+            <div class="tech-group-header">
+              <div class="tech-group-icon">DB</div>
+              <div>
+                <h3>3.7 Data &amp; Processing</h3>
+                <span class="sub">Formats, storage, and the pipes that move bytes.</span>
+              </div>
+            </div>
+            <div class="tech-grid">
+              <div class="tech-card">
+                <div class="tech-card-head">
+                  <h4>Parquet + pandas + pyarrow</h4>
+                  <span class="tech-badge b-amber">TABULAR</span>
+                </div>
+                <p class="tech-tagline">
+                  Columnar storage for OCR, ASR, objects, captions - billions of rows, fast.
+                </p>
+                <div class="tech-block">
+                  <div class="tech-block-label">What is it?</div>
+                  <p>
+                    Parquet is a columnar binary file format with per-column compression and
+                    statistics. pandas + pyarrow let us read it with low memory and fast
+                    column-selective queries.
+                  </p>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Why we chose it</div>
+                  <ul>
+                    <li><strong>10x smaller than JSONL</strong> for our metadata.</li>
+                    <li>
+                      <strong>Fast filtering</strong>: predicate push-down for
+                      <code>video_id == "L01_V012"</code>.
+                    </li>
+                    <li>
+                      <strong>Standard</strong>: integrates with FAISS, DuckDB, Spark if we scale
+                      up.
+                    </li>
+                  </ul>
+                </div>
+                <div class="tech-block usage">
+                  <div class="tech-block-label">Use in our system</div>
+                  <p>
+                    All <code>data/metadata/*.parquet</code> files. Built atomically (write tmp,
+                    rename). pandera or Pydantic checks at the boundary.
+                  </p>
+                </div>
+              </div>
+
+              <div class="tech-card">
+                <div class="tech-card-head">
+                  <h4>NumPy memmap + .npy</h4>
+                  <span class="tech-badge b-amber">VECTORS</span>
+                </div>
+                <p class="tech-tagline">Memory-mapped float matrices for the embedding store.</p>
+                <div class="tech-block">
+                  <div class="tech-block-label">What is it?</div>
+                  <p>
+                    A NumPy <code>memmap</code> exposes a binary file on disk as a virtual array;
+                    pages load on access. The <code>.npy</code> header carries shape and dtype,
+                    making it self-describing.
+                  </p>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Why we chose it</div>
+                  <ul>
+                    <li>
+                      <strong>Instant startup</strong>: opening a 5 GB embedding file takes
+                      milliseconds.
+                    </li>
+                    <li><strong>Zero-copy</strong>: pass slices directly to FAISS.</li>
+                    <li><strong>Trivial backup</strong>: a single file per model variant.</li>
+                  </ul>
+                </div>
+                <div class="tech-block usage">
+                  <div class="tech-block-label">Use in our system</div>
+                  <p>
+                    One <code>.npy</code> per embedding model in
+                    <code>data/index/&lt;model&gt;/embeddings.npy</code>, paired with a JSON
+                    <code>ids.json</code>.
+                  </p>
+                </div>
+              </div>
+
+              <div class="tech-card">
+                <div class="tech-card-head">
+                  <h4>decord + PyAV + ffmpeg</h4>
+                  <span class="tech-badge b-amber">VIDEO I/O</span>
+                </div>
+                <p class="tech-tagline">
+                  Fast random-access video reading without bash gymnastics.
+                </p>
+                <div class="tech-block">
+                  <div class="tech-block-label">What are they?</div>
+                  <p>
+                    <strong>decord</strong> is a Python video reader with GPU-accelerated decoding.
+                    <strong>PyAV</strong> wraps FFmpeg for fine-grained control.
+                    <strong>ffmpeg</strong> is the swiss-army CLI underneath.
+                  </p>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Why we chose them</div>
+                  <ul>
+                    <li>
+                      <strong>Random access</strong>: jump to any timestamp without re-decoding the
+                      whole file.
+                    </li>
+                    <li><strong>Multi-thread</strong>: parallelise ingest across CPU cores.</li>
+                    <li>
+                      <strong>Audio extraction</strong>: ffmpeg pipes audio into Whisper without
+                      intermediate WAVs.
+                    </li>
+                  </ul>
+                </div>
+                <div class="tech-block usage">
+                  <div class="tech-block-label">Use in our system</div>
+                  <p>
+                    Keyframe extraction, hover-preview clip generation, audio extraction for ASR.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tech-group" id="ts-tooling">
+            <div class="tech-group-header">
+              <div class="tech-group-icon">DX</div>
+              <div>
+                <h3>3.8 Development Tooling</h3>
+                <span class="sub">The plumbing that keeps the workspace clean and fast.</span>
+              </div>
+            </div>
+            <div class="tech-grid">
+              <div class="tech-card">
+                <div class="tech-card-head">
+                  <h4>uv + ruff + black</h4>
+                  <span class="tech-badge b-emerald">PYTHON DX</span>
+                </div>
+                <p class="tech-tagline">Fast deps, fast lints, predictable formatting.</p>
+                <div class="tech-block">
+                  <div class="tech-block-label">What are they?</div>
+                  <p>
+                    <strong>uv</strong> is a Rust-based Python package manager (5-10x faster than
+                    pip). <strong>ruff</strong> is a Rust-based linter that replaces flake8, isort,
+                    pyupgrade, and more. <strong>black</strong> is the deterministic formatter.
+                  </p>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Why we chose them</div>
+                  <ul>
+                    <li>
+                      <strong>Speed</strong>: every <code>pip install</code> becomes seconds, not
+                      minutes.
+                    </li>
+                    <li><strong>One linter</strong>: ruff covers what used to take 4 tools.</li>
+                    <li><strong>No style debate</strong>: black ends formatting bikeshedding.</li>
+                  </ul>
+                </div>
+                <div class="tech-block usage">
+                  <div class="tech-block-label">Use in our system</div>
+                  <p>
+                    Local dev: <code>uv pip install -e .[dev]</code>. CI / pre-commit:
+                    <code>ruff check . --fix</code> + <code>black .</code>.
+                  </p>
+                </div>
+              </div>
+
+              <div class="tech-card">
+                <div class="tech-card-head">
+                  <h4>pre-commit + gitleaks</h4>
+                  <span class="tech-badge b-emerald">QUALITY GATES</span>
+                </div>
+                <p class="tech-tagline">Catch bad commits before they leave the laptop.</p>
+                <div class="tech-block">
+                  <div class="tech-block-label">What are they?</div>
+                  <p>
+                    <strong>pre-commit</strong> orchestrates Git hooks declared in
+                    <code>.pre-commit-config.yaml</code>. <strong>gitleaks</strong> scans the diff
+                    for accidentally committed secrets (API keys, tokens).
+                  </p>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Why we chose them</div>
+                  <ul>
+                    <li>
+                      <strong>Defence in depth</strong> against leaked tokens, broken YAML,
+                      oversized files.
+                    </li>
+                    <li><strong>Tier-1 defence</strong> for risk R-18 (token leak via git).</li>
+                    <li>
+                      <strong>Free quality</strong>: linting, large-file check, end-of-file fixer.
+                    </li>
+                  </ul>
+                </div>
+                <div class="tech-block usage">
+                  <div class="tech-block-label">Use in our system</div>
+                  <p>
+                    One-time setup: <code>pre-commit install</code>. Every commit auto-fixes
+                    whitespace, sorts imports, scans for secrets.
+                  </p>
+                </div>
+              </div>
+
+              <div class="tech-card">
+                <div class="tech-card-head">
+                  <h4>pytest + Vitest + Playwright</h4>
+                  <span class="tech-badge b-emerald">TESTING</span>
+                </div>
+                <p class="tech-tagline">Three frameworks, one philosophy: fail loud, fail fast.</p>
+                <div class="tech-block">
+                  <div class="tech-block-label">What are they?</div>
+                  <p>
+                    <strong>pytest</strong> for Python unit + integration tests, with
+                    <code>httpx.AsyncClient</code> for endpoint tests. <strong>Vitest</strong> +
+                    React Testing Library for frontend unit tests. <strong>Playwright</strong> for
+                    E2E browser flows.
+                  </p>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Why we chose them</div>
+                  <ul>
+                    <li>
+                      <strong>Coverage by layer</strong>: unit on internals, E2E on critical paths
+                      (search → select → submit).
+                    </li>
+                    <li><strong>Stable</strong>: each is the most-used option in its niche.</li>
+                    <li>
+                      <strong>Audit value</strong>: a green test suite is evidence to the jury that
+                      the tool is the team's own.
+                    </li>
+                  </ul>
+                </div>
+                <div class="tech-block usage">
+                  <div class="tech-block-label">Use in our system</div>
+                  <p>
+                    pytest in <code>tests/</code> with fixtures of 2-3 synthetic videos. Vitest
+                    beside frontend components. Playwright for keyboard-only navigation regression.
+                  </p>
+                </div>
+              </div>
+
+              <div class="tech-card">
+                <div class="tech-card-head">
+                  <h4>HuggingFace Hub + accelerate</h4>
+                  <span class="tech-badge b-emerald">MODELS</span>
+                </div>
+                <p class="tech-tagline">Pull models, run them efficiently across GPUs.</p>
+                <div class="tech-block">
+                  <div class="tech-block-label">What are they?</div>
+                  <p>
+                    <strong>HuggingFace Hub</strong> is the model registry; the
+                    <code>huggingface_hub</code> CLI pre-downloads weights into
+                    <code>HF_HOME</code>. <strong>accelerate</strong> wraps PyTorch for
+                    mixed-precision + multi-GPU inference with minimal code.
+                  </p>
+                </div>
+                <div class="tech-block">
+                  <div class="tech-block-label">Why we chose them</div>
+                  <ul>
+                    <li>
+                      <strong>Pre-warm</strong>: download weights once during ingest week; contest
+                      day is offline-tolerant.
+                    </li>
+                    <li>
+                      <strong>Pinned revisions</strong>: prevents silent upstream changes mid-prep.
+                    </li>
+                    <li>
+                      <strong>One mental model</strong> for every model (CLIP, BLIP-2, Qwen, ...).
+                    </li>
+                  </ul>
+                </div>
+                <div class="tech-block usage">
+                  <div class="tech-block-label">Use in our system</div>
+                  <p>
+                    All model weights cached under <code>data/models/</code> (<code>HF_HOME</code>).
+                    <code>from_pretrained("name", revision="&lt;sha&gt;")</code> in every loader.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="nextsteps">
+          <h2 data-num="04">Next Steps</h2>
+          <p class="section-lead">
+            Phase 0 is foundations only. Code begins after the registration deadline. The team works
+            through the steps below in order.
+          </p>
+
+          <div class="next-grid">
+            <div class="next-card">
+              <div class="when">This week</div>
+              <h4>Read the Annotated section</h4>
+              <p>
+                Every member reads <code>docs/05-references-papers.md</code> § Annotated Key
+                Readings. Discuss in chat.
+              </p>
+            </div>
+            <div class="next-card">
+              <div class="when">Before 15 / 6 / 2026</div>
+              <h4>Register the team</h4>
+              <p>
+                Submit registration at
+                <a href="https://aichallenge.hochiminhcity.gov.vn"
+                  >aichallenge.hochiminhcity.gov.vn</a
+                >. Lead is responsible.
+              </p>
+            </div>
+            <div class="next-card">
+              <div class="when">By end of May</div>
+              <h4>Run the quick-start</h4>
+              <p>
+                Each member runs <code>make install</code>, <code>pre-commit install</code>, and
+                verifies the dev env.
+              </p>
+            </div>
+            <div class="next-card">
+              <div class="when">June</div>
+              <h4>Assign team roles</h4>
+              <p>
+                Per <code>docs/06-team-roles.md</code>. Lead, ML, Backend, Frontend, Operator,
+                Coach.
+              </p>
+            </div>
+            <div class="next-card">
+              <div class="when">June</div>
+              <h4>Build the local query set</h4>
+              <p>
+                Expand <code>data/queries/sample.json</code> from 10 placeholders to 30-50
+                hand-crafted Vietnamese queries when BTC data arrives.
+              </p>
+            </div>
+            <div class="next-card">
+              <div class="when">July</div>
+              <h4>First mock contest</h4>
+              <p>
+                Run <code>/mock-contest</code> as soon as Phase 1 ships a minimum-viable backend +
+                frontend.
+              </p>
+            </div>
+            <div class="next-card">
+              <div class="when">Continuous</div>
+              <h4>Risk register review</h4>
+              <p>
+                Weekly: lead skims <code>docs/risk-register.md</code> and updates likelihood /
+                impact for any active risk.
+              </p>
+            </div>
+            <div class="next-card">
+              <div class="when">When BTC spec drops</div>
+              <h4>Revisit ADR-003</h4>
+              <p>
+                Re-evaluate the Agent / RAG deferral. If a Q&amp;A sub-task is required, kick off T1
+                → T2 → T3 build per the deferred plan.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <footer>
+          <span>AI Challenge HCMC 2026 - Team Kickoff Minutes #0</span>
+          <span>Generated 2026-05-11 · Workspace language: English</span>
+        </footer>
+      </main>
+    </div>
+  </body>
+</html>

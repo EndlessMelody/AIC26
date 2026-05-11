@@ -1,0 +1,29 @@
+{
+  "query_id": "Q01",
+  "team_id": "team-example",
+  "submitted_at": "2026-09-15T10:23:11.456+07:00",
+  "method_note": "OpenCLIP ViT-L/14 dense + BM25 over OCR/ASR + LLM rerank",
+  "results": [
+    {
+      "rank": 1,
+      "video_id": "L01_V001",
+      "frame_idx": 12450,
+      "timestamp_ms": 415000,
+      "confidence": 0.87
+    },
+    {
+      "rank": 2,
+      "video_id": "L01_V001",
+      "frame_idx": 12480,
+      "timestamp_ms": 416000,
+      "confidence": 0.71
+    },
+    {
+      "rank": 3,
+      "video_id": "L01_V003",
+      "frame_idx": 8410,
+      "timestamp_ms": 280333,
+      "confidence": 0.55
+    }
+  ]
+}

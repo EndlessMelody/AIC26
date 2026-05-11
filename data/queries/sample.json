@@ -1,0 +1,105 @@
+{
+  "_doc": "Local evaluation query set (NOT a submission). Add 30-50 hand-crafted Vietnamese queries with gold answers as soon as BTC releases data. Until then, this file demonstrates the structure with placeholders. Replace _gold values with real video_id / frame_idx once data is available. The submission schema (different shape) lives in artifacts/submission-format/schema.json.",
+  "version": 1,
+  "created_at": "2026-05-11",
+  "queries": [
+    {
+      "query_id": "DEV-Q001",
+      "type": "textual-kis",
+      "difficulty": "easy",
+      "query_vi": "Buổi họp báo về công nghệ với phông nền màu xanh, có diễn giả nam mặc vest đen.",
+      "query_en": "Tech press conference with a blue backdrop and a male speaker in a black suit.",
+      "_gold": { "video_id": "PLACEHOLDER", "frame_idx": 0, "timestamp_ms": 0 },
+      "tags": ["press-conference", "indoor", "person"]
+    },
+    {
+      "query_id": "DEV-Q002",
+      "type": "textual-kis",
+      "difficulty": "easy",
+      "query_vi": "Cảnh đường phố đông đúc ở trung tâm Sài Gòn vào ban đêm, có nhiều bảng quảng cáo sáng.",
+      "query_en": "Busy night-time street in central Saigon with many bright billboards.",
+      "_gold": { "video_id": "PLACEHOLDER", "frame_idx": 0, "timestamp_ms": 0 },
+      "tags": ["street", "night", "outdoor", "urban"]
+    },
+    {
+      "query_id": "DEV-Q003",
+      "type": "textual-kis",
+      "difficulty": "medium",
+      "query_vi": "Một phụ nữ mặc áo dài đỏ đang phát biểu trên sân khấu, phía sau có quốc kỳ Việt Nam.",
+      "query_en": "A woman in a red ao dai speaking on stage, with the Vietnamese national flag behind her.",
+      "_gold": { "video_id": "PLACEHOLDER", "frame_idx": 0, "timestamp_ms": 0 },
+      "tags": ["person", "stage", "flag", "ao-dai"]
+    },
+    {
+      "query_id": "DEV-Q004",
+      "type": "textual-kis",
+      "difficulty": "medium",
+      "query_vi": "Đoàn xe máy diễu hành trên một con đường rộng, có biểu ngữ với chữ 'Việt Nam'.",
+      "query_en": "Motorcycle parade on a wide road with a banner that reads 'Việt Nam'.",
+      "_gold": { "video_id": "PLACEHOLDER", "frame_idx": 0, "timestamp_ms": 0 },
+      "tags": ["parade", "motorcycle", "banner", "ocr-vi"]
+    },
+    {
+      "query_id": "DEV-Q005",
+      "type": "textual-kis",
+      "difficulty": "medium",
+      "query_vi": "Cảnh trong một nhà máy, có công nhân đang lắp ráp linh kiện điện tử trên dây chuyền.",
+      "query_en": "Scene inside a factory, workers assembling electronic components on an assembly line.",
+      "_gold": { "video_id": "PLACEHOLDER", "frame_idx": 0, "timestamp_ms": 0 },
+      "tags": ["industrial", "factory", "worker"]
+    },
+    {
+      "query_id": "DEV-Q006",
+      "type": "textual-kis",
+      "difficulty": "hard",
+      "query_vi": "Một quan chức bắt tay với một khách nước ngoài trong căn phòng trang trọng, có lọ hoa lớn trên bàn.",
+      "query_en": "An official shaking hands with a foreign guest in a formal room with a large flower vase on the table.",
+      "_gold": { "video_id": "PLACEHOLDER", "frame_idx": 0, "timestamp_ms": 0 },
+      "tags": ["diplomacy", "indoor", "handshake"]
+    },
+    {
+      "query_id": "DEV-Q007",
+      "type": "textual-kis",
+      "difficulty": "hard",
+      "query_vi": "Cảnh từ trên cao của một cánh đồng lúa vàng, có vài người nông dân đang gặt.",
+      "query_en": "Aerial view of a golden rice field with a few farmers harvesting.",
+      "_gold": { "video_id": "PLACEHOLDER", "frame_idx": 0, "timestamp_ms": 0 },
+      "tags": ["aerial", "rural", "agriculture"]
+    },
+    {
+      "query_id": "DEV-Q008",
+      "type": "textual-kis",
+      "difficulty": "hard",
+      "query_vi": "Phóng viên cầm micro phỏng vấn một người dân trước cửa một bệnh viện, micro có logo của đài truyền hình.",
+      "query_en": "A reporter holding a microphone interviews a citizen in front of a hospital; the microphone shows a broadcaster logo.",
+      "_gold": { "video_id": "PLACEHOLDER", "frame_idx": 0, "timestamp_ms": 0 },
+      "tags": ["interview", "outdoor", "hospital", "logo"]
+    },
+    {
+      "query_id": "DEV-Q009",
+      "type": "video-kis",
+      "difficulty": "hard",
+      "_constraint": "no-screenshot",
+      "query_observed": [
+        "Aerial shot of a busy intersection at daytime.",
+        "Red traffic light visible in the upper-right.",
+        "A large blue-roof building on the right side."
+      ],
+      "_gold": { "video_id": "PLACEHOLDER", "frame_idx": 0, "timestamp_ms": 0 },
+      "tags": ["aerial", "intersection", "outdoor"]
+    },
+    {
+      "query_id": "DEV-Q010",
+      "type": "video-kis",
+      "difficulty": "hard",
+      "_constraint": "no-screenshot",
+      "query_observed": [
+        "Indoor newsroom with several monitors behind the anchor.",
+        "Female anchor wearing a blue blazer.",
+        "On-screen text shows the date and a stock ticker at the bottom."
+      ],
+      "_gold": { "video_id": "PLACEHOLDER", "frame_idx": 0, "timestamp_ms": 0 },
+      "tags": ["newsroom", "indoor", "anchor", "ocr-en"]
+    }
+  ]
+}
