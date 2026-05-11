@@ -12,12 +12,13 @@
 
 ## Operational Documents
 
-| Document                                                 | What it covers                                        | Read when                             |
-| -------------------------------------------------------- | ----------------------------------------------------- | ------------------------------------- |
-| [`glossary.md`](./glossary.md)                           | Shared vocabulary (KIS, AVS, RRF, MRR, Recall@k, ...) | Anytime you see an unfamiliar acronym |
-| [`operator-manual.md`](./operator-manual.md)             | Mental model for the contest operator                 | Before every mock contest             |
-| [`contest-day-checklist.md`](./contest-day-checklist.md) | T-24h, T-30min, during, between, after                | Print and bring on contest day        |
-| [`risk-register.md`](./risk-register.md)                 | Known risks with mitigation owners                    | Weekly review by team lead            |
+| Document                                                 | What it covers                                                               | Read when                             |
+| -------------------------------------------------------- | ---------------------------------------------------------------------------- | ------------------------------------- |
+| [`glossary.md`](./glossary.md)                           | Shared vocabulary (KIS, AVS, RRF, MRR, Recall@k, ...)                        | Anytime you see an unfamiliar acronym |
+| [`operator-manual.md`](./operator-manual.md)             | Mental model for the contest operator                                        | Before every mock contest             |
+| [`contest-day-checklist.md`](./contest-day-checklist.md) | T-24h, T-30min, during, between, after                                       | Print and bring on contest day        |
+| [`risk-register.md`](./risk-register.md)                 | Known risks with mitigation owners                                           | Weekly review by team lead            |
+| [`team-guide-vi.md`](./team-guide-vi.md)                 | **Vietnamese onboarding guide** (intentional exception to English-only rule) | New team members on day 1             |
 
 ## Architecture Decision Records
 

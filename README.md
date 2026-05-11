@@ -10,6 +10,8 @@ Interactive multimedia retrieval system for the AI Challenge Ho Chi Minh City 20
 >
 > Official website: <https://aichallenge.hochiminhcity.gov.vn>
 
+> 🇻🇳 **Thành viên Việt Nam mới onboarding**: mở [`docs/team-guide-vi.md`](docs/team-guide-vi.md) trước - hướng dẫn tiếng Việt đầy đủ về cách sử dụng workspace.
+
 ## Quick Start (Phase 0 - planning & docs only)
 
 Backend, frontend, and ML pipeline are intentionally **placeholders** during Phase 0.
@@ -57,17 +59,35 @@ Start with `docs/README.md` and follow the suggested reading order.
 | [`docs/04-tech-stack.md`](docs/04-tech-stack.md)                     | Libraries, models, hardware                   |
 | [`docs/05-references-papers.md`](docs/05-references-papers.md)       | Reading list                                  |
 | [`docs/06-team-roles.md`](docs/06-team-roles.md)                     | Who owns what                                 |
+| [`docs/glossary.md`](docs/glossary.md)                               | Shared vocabulary (KIS, RRF, MRR, ...)        |
+| [`docs/operator-manual.md`](docs/operator-manual.md)                 | Mental model for the contest operator         |
+| [`docs/contest-day-checklist.md`](docs/contest-day-checklist.md)     | T-24h / during / after the round              |
+| [`docs/risk-register.md`](docs/risk-register.md)                     | 20 ranked risks + mitigations                 |
+| [`docs/decisions/`](docs/decisions/)                                 | Architecture Decision Records (3 ADRs)        |
+| [`docs/minutes/00-kickoff.html`](docs/minutes/00-kickoff.html)       | Team kickoff meeting #0 (HTML)                |
+| [`docs/team-guide-vi.md`](docs/team-guide-vi.md)                     | 🇻🇳 **Vietnamese onboarding guide**            |
 
 ## Cascade Workflows
 
 Run a workflow with `/<name>` in Cascade chat:
 
+Data pipeline:
+
 - `/extract-keyframes` - keyframe extraction
 - `/build-embeddings` - CLIP encoding + FAISS index
 - `/ingest-data` - full pipeline (heavy)
+
+Development:
+
 - `/run-dev` - start backend + frontend
 - `/submit-result` - submit a result to the grading server
 - `/eval-local` - local evaluation on a query set
+
+Contest readiness:
+
+- `/mock-contest` - timed mock contest
+- `/profile-latency` - measure P50 / P95 search latency
+- `/export-audit-snapshot` - bundle submissions + logs for jury audit
 
 ## Conventions
 

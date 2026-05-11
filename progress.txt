@@ -2,6 +2,15 @@ AI Challenge 2026 - Progress Log
 ================================
 One line per change. Most recent at the top.
 
+2026-05-11  Vietnamese onboarding guide added.
+              - New file: docs/team-guide-vi.md (intentional exception
+                to the English-only rule; explained in the file header).
+              - Covers: workspace purpose, quick-start reading order,
+                per-folder usage, common workflows, core rules, FAQ,
+                command cheat sheet, roadmap.
+              - Linked from README.md (root) prominently for Vietnamese
+                members and from docs/README.md operational table.
+
 2026-05-11  Workspace audit + upgrade (Gói B) + Team kickoff minutes #0.
               - Audited the Phase-0 workspace; identified 5 critical gaps.
               - Filled critical gaps:
